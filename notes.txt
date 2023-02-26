@@ -1,0 +1,11 @@
+circle not hovered: 255,255,255
+circle hovered: 125, 205, 255
+125, 205, 255
+Ukrane blue on move bar: 52, 201, 255
+Ukrane yeller on move bar: 255, 206, 28
+
+white circle position middle (1280,1335)
+top left ukrane flag[fishing bar] (1072,1159)
+bottom right ukrane flag (1487,1198)
+left middle ukrane flage (1075,1179)
+right middle (1484,1179)
