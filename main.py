@@ -1,7 +1,8 @@
-from string import whitespace
 import time
 import pydirectinput
-import pyautogui
+import dxcam
+
+cam = dxcam.create()
 
 class Circle:
     white = (255,255,255)
@@ -13,35 +14,43 @@ class Circle:
 class UkraneFlag:
     blue = (52, 201, 255)
     yellow = (255, 206, 28)
-    cords = (1075, 1179, 410, 1)
+    x = 1075
+    y = 1179
 
 def checkUkrane():
-    img = pyautogui.screenshot(region=UkraneFlag.cords)
+    frame = cam.grab()
+    while frame is None:
+        frame = cam.grab()
 
-    bluePixels = [] 
+    bluePixels = set()
     for i in range(410):
-        color = img.getpixel((i,0))
+        color = tuple(frame[UkraneFlag.y, UkraneFlag.x + i])
         if color == UkraneFlag.blue:
-            bluePixels.append(i)
+            bluePixels.add(i)
 
-    #bluePixels = bluePixels[int(len(bluePixels)/2) -2:int(len(bluePixels)/2) +2]
     yellowOnBlue=False
     while not yellowOnBlue:
-        img = pyautogui.screenshot(region=UkraneFlag.cords)
+        frame = cam.grab()
+        while frame is None:
+            frame = cam.grab()
         for i in bluePixels:
-            if img.getpixel((i,0)) == UkraneFlag.yellow:
+            if tuple(frame[UkraneFlag.y, UkraneFlag.x + i]) == UkraneFlag.yellow:
                 pydirectinput.click(Circle.x, Circle.bottomy)
                 yellowOnBlue = True
+                print(F"Detected: {UkraneFlag.x + i}")
                 break
 
 def checkfishon():
-    pixelwhite = pyautogui.pixelMatchesColor(Circle.x, Circle.y, Circle.white)
-    pixelblue = pyautogui.pixelMatchesColor(Circle.x, Circle.y, Circle.blue)
-    return pixelwhite or pixelblue
+    frame = cam.grab()
+    while frame is None:
+        frame = cam.grab()
 
+    color = tuple(frame[Circle.y, Circle.x])
+    return color == Circle.white or color == Circle.blue
+
+fishCount = 0
 time.sleep(3)
 while True:
-    print("bluped")
     pydirectinput.click(1280, 720)
 
     while not checkfishon():
@@ -54,3 +63,6 @@ while True:
     time.sleep(0.5)
     pydirectinput.press('e')
     time.sleep(0.5)
+
+    fishCount += 1
+    print(f"Caught Fish: {fishCount}\n")
