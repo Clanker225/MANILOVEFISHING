@@ -63,6 +63,10 @@ while True:
     time.sleep(0.5)
     pydirectinput.press('e')
     time.sleep(0.5)
+    pydirectinput.press('e')
+    time.sleep(0.5)
+    pydirectinput.press('e')
+    time.sleep(0.5)
 
     fishCount += 1
     print(f"Caught Fish: {fishCount}\n")
